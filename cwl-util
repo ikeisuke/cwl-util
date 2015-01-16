@@ -72,7 +72,7 @@ class CloudWatchLogs
   end
 
   def grep_event_thread(log_stream_name)
-    p log_stream_name if @debug
+    puts log_stream_name if @debug
     log_events(log_stream_name).each_page do |resp|
       break if resp.events.empty? # .each_page bug !?
       @threads_event << Thread.new do
@@ -83,7 +83,7 @@ class CloudWatchLogs
 
   def grep_event_message(message)
     if message.include?( @str )
-      p message if @debug
+      puts message if @debug
       @buffer << message
     end
   end
