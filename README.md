@@ -19,13 +19,14 @@ gem
 # Install
 
 sudo yum install gcc ruby-devel
+
 bundle install
 
 # Feature
 
 ## grep
 
-grep message in cloudwatch log streams of a cloudwatch group
+Grep message in cloudwatch log streams of a cloudwatch group.
 
 ### Usage
 
@@ -33,26 +34,26 @@ grep message in cloudwatch log streams of a cloudwatch group
 
 ### Options
 
--o, [--output=OUTPUT]            # path to output file
+-o, [--output=OUTPUT] # path to output file
   
-[--debug], [--no-debug]
+[--debug], [--no-debug] # print log_stream_name and message to stdout
   
--s, [--start-time=N]             # unixtimestamp as the number milliseconds, default : yesterday 00:00:00
+-s, [--start-time=N] # unixtimestamp as the number milliseconds, default : yesterday 00:00:00
   
--e, [--end-time=N]               # unixtimestamp as the number milliseconds, default : today 00:00:00
+-e, [--end-time=N] # unixtimestamp as the number milliseconds, default : today 00:00:00
   
 
 ### Example
 
-set start_tmime and end_time
+1. Set start_tmime and end_time.
 
 `AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -s 1421161200000 -e 1421323200000`
 
-grep 'string' from 'yout_log_stream' all yesterday, and put result to output file
+2. Grep 'string' from 'yout_log_stream' all yesterday, and put result to output file.
 
 `AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -o /path/to/output`
 
-debug ( prints stream_name and message to stdout )
+3. Debug ( prints stream_name and message to stdout ).
 
 `AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -o /path/to/output --debug`
 
