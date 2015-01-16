@@ -1,0 +1,93 @@
+#!/usr/bin/env ruby
+#coding: utf-8
+
+require 'aws-sdk-core'
+require 'thor'
+require 'date'
+
+class CWLUtil < Thor
+  default_command :grep
+
+  desc 'grep STRING LOG_GROUP_NAME [-s start_time] [-e end_time] [-o output] [--debug]', 'grep cloudwatch log stream message'
+  option :output, type: :string, aliases: '-o', desc: 'path to output file'
+  option :debug, type: :boolean, default: false
+  option :start_time, type: :numeric, aliases: '-s', default: (Date.today - 1).to_time.to_i * 1000, desc: 'unixtimestamp as the number milliseconds'
+  option :end_time, type: :numeric, aliases: '-e', default: Date.today.to_time.to_i * 1000, desc: 'unixtimestamp as the number milliseconds'
+
+  def grep(str, log_group_name)
+    obj = CloudWatchLogs.new(str, log_group_name, options)
+    obj.grep()
+    obj.dump()
+  end
+end
+
+class CloudWatchLogs
+
+  def initialize(str, log_group_name, options)
+    @cloudwatchlogs = Aws::CloudWatchLogs::Client.new
+    @log_group_name = log_group_name
+    @str            = str
+    @start_time     = options[:start_time]
+    @end_time       = options[:end_time]
+    @output         = options[:output]
+    @debug        = options[:debug]
+    @threads_stream = []
+    @threads_event  = []
+    @buffer         = []
+  end
+
+  def grep
+    log_streams().each_page do |resp|
+      @threads_stream << Thread.new do
+        grep_stream_thread(resp)
+      end
+    end
+    @threads_event.each  { |t| t.join }
+    @threads_stream.each { |t| t.join }
+  end
+
+  def dump
+    File.write( @output , @buffer.sort!.join("\n") ) if @output
+  end
+
+  private
+
+  def log_streams
+    @cloudwatchlogs.describe_log_streams( log_group_name: @log_group_name )
+  end
+
+  def log_events(log_stream_name)
+    @cloudwatchlogs.get_log_events(
+      log_group_name:  @log_group_name,
+      log_stream_name: log_stream_name,
+      start_time:      @start_time,
+      end_time:        @end_time
+    )
+  end
+
+  def grep_stream_thread(log_stream)
+    log_stream.log_streams.map do |stream|
+      grep_event_thread(stream[:log_stream_name])
+    end
+  end
+
+  def grep_event_thread(log_stream_name)
+    p log_stream_name if @debug
+    log_events(log_stream_name).each_page do |resp|
+      break if resp.events.empty? # .each_page bug !?
+      @threads_event << Thread.new do
+        resp.events.map { |event| grep_event_message(event[:message]) }
+      end
+    end
+  end
+
+  def grep_event_message(message)
+    if message.include?( @str )
+      p message if @debug
+      @buffer << message
+    end
+  end
+
+end
+
+CWLUtil.start(ARGV)
