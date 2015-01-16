@@ -5,8 +5,21 @@ This is cloudwatch logs util.
 
 # Require
 
-- gem install aws-sdk-core
-- gem install thor
+package
+
+- gcc
+- ruby-devel
+
+gem
+
+- gem aws-sdk-core
+- gem thor
+- gem io-console
+
+# Install
+
+sudo yum install gcc ruby-devel
+bundle install
 
 # Feature
 
