@@ -5,6 +5,9 @@ This is cloudwatch logs util.
 
 # Require
 
+ruby
+- v2.0.0 ~
+
 package
 
 - gcc
@@ -12,9 +15,9 @@ package
 
 gem
 
-- gem aws-sdk-core
-- gem thor
-- gem io-console
+- aws-sdk-core
+- thor
+- io-console
 
 # Install
 
