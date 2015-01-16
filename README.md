@@ -18,9 +18,13 @@ gem
 
 # Install
 
-sudo yum install gcc ruby-devel
-
+```bash
+sudo yum install git gcc ruby-devel
+gem install bundler
+git clone https://github.com/szkkentaro/cwl-util.git
+cd cwl-util
 bundle install
+```
 
 # Feature
 
