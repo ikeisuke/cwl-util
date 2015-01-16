@@ -30,7 +30,7 @@ Grep message in cloudwatch log streams of a cloudwatch group.
 
 ### Usage
 
-`cwl-util grep STRING LOG_GROUP_NAME [-s start_time] [-e end_time] [-o output] [--debug]`
+  cwl-util grep STRING LOG_GROUP_NAME [-s start_time] [-e end_time] [-o output] [--debug]
 
 ### Options
 
@@ -45,17 +45,17 @@ Grep message in cloudwatch log streams of a cloudwatch group.
 
 ### Example
 
-1. Set start_tmime and end_time.
+* Set start_tmime and end_time.
 
-`AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -s 1421161200000 -e 1421323200000`
+  AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -s 1421161200000 -e 1421323200000
 
-2. Grep 'string' from 'yout_log_stream' all yesterday, and put result to output file.
+* Grep 'string' from 'yout_log_stream' all yesterday, and put result to output file.
 
-`AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -o /path/to/output`
+  AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -o /path/to/output
 
-3. Debug ( prints stream_name and message to stdout ).
+* Debug ( prints stream_name and message to stdout ).
 
-`AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -o /path/to/output --debug`
+  AWS_PROFILE=your_profile AWS_REGION=us-east-1 cwl-util 'string' 'your_log_stream' -o /path/to/output --debug
 
 # Todo
 
