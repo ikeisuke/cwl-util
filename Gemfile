@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'aws-sdk-core'
-gem 'thor'
-gem 'io-console'
+# Specify your gem's dependencies in cwl-util.gemspec
+gemspec
